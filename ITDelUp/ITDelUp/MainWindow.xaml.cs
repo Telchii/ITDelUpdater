@@ -18,6 +18,8 @@ using System.IO.Compression;		//For the zippers
 using System.Diagnostics;			//To open every friggin' link
 using System.Threading;				//For sleepy time
 using System.ComponentModel;		//To notify of prop changes. Yay.
+using System.Windows.Controls;		//Thought this was for the File Dialog Box..?
+using Microsoft.Win32;				//For the File Dialog Box, according to the intellisense
 
 namespace ITDelUp
 {
@@ -75,7 +77,7 @@ namespace ITDelUp
 			RunBundler();
 		}
 
-		private void Button_Move(object sender, RoutedEventArgs e)
+		private void Button_Group(object sender, RoutedEventArgs e)
 		{
 			MoveFolder();
 		}
@@ -135,7 +137,9 @@ namespace ITDelUp
 				Process.Start(@"Bundler.bat");
 				Thread.Sleep(1500); //Give it a couple seconds to run. 
 
-				string newITDFolderName = newDirPath;
+				string newITDFolderName = @"C:\Users\";
+				newITDFolderName += username;
+				newITDFolderName += @"\Desktop\";
 				newITDFolderName += " "; //Gotta get that space, yo...
 				newITDFolderName += TodaysDate;
 
@@ -153,12 +157,13 @@ namespace ITDelUp
 				string username = Environment.UserName;
 				string zipBasePath = @"C:\Users\";
 				zipBasePath += username;
-				zipBasePath += @"\Downloads";
+				zipBasePath += @"\Desktop\";
 
 				string zipResultPath = zipBasePath;
 				zipResultPath += @"\IT Delete";
 				zipResultPath += " ";
 				zipResultPath += TodaysDate;
+				zipResultPath += ".zip";
 
 				ZipFile.CreateFromDirectory(zipBasePath, zipResultPath);
 
@@ -193,7 +198,7 @@ namespace ITDelUp
 			}
 		}
 
-		//Status Helpers
+		//Helper helper helpers.
 		private void GenerateFileSafeDate()
 		{
 			string ret = "";
@@ -206,6 +211,18 @@ namespace ITDelUp
 			TodaysDate = ret;
 		}
 
+		private void FileDialog()
+		{
+			OpenFileDialog fd = new OpenFileDialog();
+			fd.Filter = "All Files (*.*)|*.*";
+			fd.FilterIndex = 1;
+			fd.Multiselect = false;
+			fd.InitialDirectory = @"C:\";
+			var result = fd.ShowDialog();
+			String result2 = fd.SafeFileName;
+		}
+
+		//Status Helpers
 		private void SetError()
 		{
 			//StatusMessage = "Error";
