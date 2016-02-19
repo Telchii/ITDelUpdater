@@ -1,0 +1,13 @@
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\bin\Debug\ITDelUp.exe.config
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\bin\Debug\ITDelUp.exe
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\bin\Debug\ITDelUp.pdb
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\ITDelUp.csprojResolveAssemblyReference.cache
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\MainWindow.baml
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\MainWindow.g.cs
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\App.g.cs
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\ITDelUp_MarkupCompile.cache
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\ITDelUp.g.resources
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\ITDelUp.Properties.Resources.resources
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\ITDelUp.csproj.GenerateResource.Cache
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\ITDelUp.exe
+C:\Users\Kole\Documents\Visual Studio 2013\Projects\CS3100Assign1\ITDelUp\ITDelUp\obj\Debug\ITDelUp.pdb
