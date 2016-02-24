@@ -18,7 +18,6 @@ using System.IO.Compression;		//For the zippers
 using System.Diagnostics;			//To open every friggin' link
 using System.Threading;				//For sleepy time
 using System.ComponentModel;		//To notify of prop changes. Yay.
-using System.Windows.Controls;		//Thought this was for the File Dialog Box..?
 using Microsoft.Win32;				//For the File Dialog Box, according to the intellisense
 
 namespace ITDelUp
@@ -77,11 +76,6 @@ namespace ITDelUp
 			RunBundler();
 		}
 
-		private void Button_Group(object sender, RoutedEventArgs e)
-		{
-			MoveFolder();
-		}
-
 		private void Button_Zip(object sender, RoutedEventArgs e)
 		{
 			FileZipper();
@@ -102,7 +96,7 @@ namespace ITDelUp
 
 		private void OpenLinks()
 		{
-			MessageBoxResult res = MessageBox.Show("Incoming links! Are you ready??? This program may seem inactive while the links are opening.", "Incoming! Incoming! Incoming!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+			MessageBoxResult res = MessageBox.Show("\tIncoming links! Are you ready???\n\nThis program may seem inactive while the links are opening. Just give it a minute. If it fails to respond, restart it and continue on where you left off.\n\nTo make life easier, set Chrome as your default browser during this process.", "Incoming! Incoming! Incoming!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
 			try
 			{
@@ -111,7 +105,7 @@ namespace ITDelUp
 					foreach (string url in urls)
 					{
 						Process.Start(url);
-						Thread.Sleep(350);
+						Thread.Sleep(375);
 					}
 				}
 			} catch (Exception e)
@@ -135,12 +129,11 @@ namespace ITDelUp
 				newDirPath += @"\Downloads\IT Delete";
 
 				Process.Start(@"Bundler.bat");
-				Thread.Sleep(1500); //Give it a couple seconds to run. 
+				Thread.Sleep(2000); //Give it a couple seconds to run. 
 
 				string newITDFolderName = @"C:\Users\";
 				newITDFolderName += username;
-				newITDFolderName += @"\Desktop\";
-				newITDFolderName += " "; //Gotta get that space, yo...
+				newITDFolderName += @"\Desktop\IT Delete "; //Keep that training space, yo.
 				newITDFolderName += TodaysDate;
 
 				Directory.Move(newDirPath, newITDFolderName);
@@ -171,11 +164,6 @@ namespace ITDelUp
 			{
 				ShowError(e.Message);
 			}
-		}
-
-		private void MoveFolder()
-		{
-
 		}
 
 		//Message Box Helpers
