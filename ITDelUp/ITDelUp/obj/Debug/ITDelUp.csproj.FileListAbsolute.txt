@@ -27,4 +27,3 @@ C:\Users\Kole\Documents\GitHub\ITDelUpdater\ITDelUp\ITDelUp\obj\Debug\ITDelUp.Pr
 C:\Users\Kole\Documents\GitHub\ITDelUpdater\ITDelUp\ITDelUp\obj\Debug\ITDelUp.csproj.GenerateResource.Cache
 C:\Users\Kole\Documents\GitHub\ITDelUpdater\ITDelUp\ITDelUp\obj\Debug\ITDelUp.exe.manifest
 C:\Users\Kole\Documents\GitHub\ITDelUpdater\ITDelUp\ITDelUp\obj\Debug\ITDelUp.application
-C:\Users\Kole\Documents\GitHub\ITDelUpdater\ITDelUp\ITDelUp\obj\Debug\ITDelUp.csprojResolveAssemblyReference.cache

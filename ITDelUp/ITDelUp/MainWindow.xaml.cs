@@ -96,7 +96,7 @@ namespace ITDelUp
 
 		private void OpenLinks()
 		{
-			MessageBoxResult res = MessageBox.Show("\tIncoming links! Are you ready???\n\nThis program may seem inactive while the links are opening. Just give it a minute. If it fails to respond, restart it and continue on where you left off.\n\nTo make life easier, set Chrome as your default browser during this process.", "Incoming! Incoming! Incoming!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+			MessageBoxResult res = MessageBox.Show("!! Incoming links! Are you ready?? !!\n\nThis program may seem inactive while the links are opening. Just give it a minute. If it fails to respond, restart it and continue on where you left off.\n\nTo make life easier, set Chrome as your default browser during this process.", "Incoming! Incoming! Incoming!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
 			try
 			{
