@@ -4,11 +4,11 @@ http://www.bleepingcomputer.com/download/rkill/dl/10/
 http://www.bleepingcomputer.com/download/combofix/dl/12/
 http://www.bleepingcomputer.com/download/tdsskiller/dl/4/
 http://www.bleepingcomputer.com/download/autoruns/dl/185/
+http://www.spybotupdates.com/files/spybotsd162.exe
+https://www.comodo.com/business-security/network-protection/cleaning_essentials.php
+https://www.comodo.com/business-security/network-protection/cleaning_essentials.php
 https://www.piriform.com/ccleaner/download/portable
 http://downloadcenter.mcafee.com/products/mcafee-avert/stinger/stinger64.exe
 http://www.shouldiremoveit.com/download-thankyou.aspx?download=1
 https://www.herdprotect.com/installers/herdProtectScan_Portable.exe
 http://www.revouninstaller.com/download-free-portable.php
-https://www.safer-networking.org/spybots-own-mirror-1/
-https://www.comodo.com/business-security/network-protection/cleaning_essentials.php
-https://www.comodo.com/business-security/network-protection/cleaning_essentials.php

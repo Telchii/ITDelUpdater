@@ -39,6 +39,11 @@ namespace ITDelUp
 		private string newITDFolderName { get; set; }
 
 		private string TodaysDate { get; set; }
+		private string ChromePath { get; set; }
+
+		//Sleep times, used in the link opening.
+		private int shortSleep = 400;
+		private int longSleep = 8000;
 
 		//Ctors
 		public MainWindow()
@@ -52,6 +57,7 @@ namespace ITDelUp
 			ClickedMoveOnce = false;
 
 			GenerateFileSafeDate();
+			ChromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
 			//SetReady();
 		}
 
@@ -96,23 +102,72 @@ namespace ITDelUp
 
 		private void OpenLinks()
 		{
-			MessageBoxResult res = MessageBox.Show("!! Incoming links! Are you ready?? !!\n\nThis program may seem inactive while the links are opening. Just give it a minute. If it fails to respond, restart it and continue on where you left off.\n\nTo make life easier, set Chrome as your default browser during this process.", "Incoming! Incoming! Incoming!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-			try
+			if (checkChromeExists() == true)
 			{
-				if (res == MessageBoxResult.Yes)
+				MessageBoxResult msgres = MessageBox.Show("Google Chrome has been detected!\n\nThis program is going to open a bunch of downloads via Google Chrome.\n\nThis program may seem inactive while this is occurring. Don't worry! It will return to normal when the links are finished opening.", "Brace thine self for the downloads!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+				try
 				{
+					int limitThree = 0;
 					foreach (string url in urls)
 					{
-						Process.Start(url);
-						Thread.Sleep(375);
+						Process.Start(ChromePath, url);
+						limitThree++;
+
+						if (limitThree < 3)
+						{
+							Thread.Sleep(shortSleep);
+						} else
+						{
+							Thread.Sleep(longSleep);
+							limitThree = 0;
+						}
 					}
+					lastThreeNote();
+				} catch (Exception e)
+				{
+					ShowError(e.Message);
 				}
-			} catch (Exception e)
+			} else
 			{
-				ShowError(e.Message);
+				MessageBoxResult res = MessageBox.Show("!! Incoming links! Are you ready?? !!\n\nThis program may seem inactive while the links are opening. Just give it a minute. If it fails to respond, restart it and continue on where you left off.\n\nTo make life easier, set Chrome as your default browser during this process.", "Brace thine self for the downloads!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+				try
+				{
+					if (res == MessageBoxResult.Yes)
+					{
+						int limitThree = 0;
+						foreach (string url in urls)
+						{
+							Process.Start(url);
+							limitThree++;
+
+							if (limitThree < 3)
+							{
+								Thread.Sleep(shortSleep);
+							} else
+							{
+								Thread.Sleep(longSleep);
+								limitThree = 0;
+							}
+						}
+					}
+					lastThreeNote();
+				} catch (Exception e)
+				{
+					ShowError(e.Message);
+				}
 			}
-			
+		}
+
+		private bool checkChromeExists()
+		{
+			return File.Exists(ChromePath); ;
+		}
+
+		private void lastThreeNote()
+		{
+			MessageBoxResult res = MessageBox.Show("The download pages should be done opening. The last three links (Spybot and two Comodo links) need to be manually downloaded from that point.\nThe two Comodo links are opened to download the 64 and 32 bit versions easily.", "Note", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 
 		private void RunBundler()
