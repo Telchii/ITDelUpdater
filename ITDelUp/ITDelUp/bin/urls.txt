@@ -9,6 +9,6 @@ http://downloadcenter.mcafee.com/products/mcafee-avert/stinger/stinger64.exe
 http://www.shouldiremoveit.com/download-thankyou.aspx?download=1
 https://www.herdprotect.com/installers/herdProtectScan_Portable.exe
 http://www.revouninstaller.com/download-free-portable.php
-https://www.safer-networking.org/spybots-own-mirror-1/
 https://www.comodo.com/business-security/network-protection/cleaning_essentials.php
 https://www.comodo.com/business-security/network-protection/cleaning_essentials.php
+https://www.safer-networking.org/mirrors16/

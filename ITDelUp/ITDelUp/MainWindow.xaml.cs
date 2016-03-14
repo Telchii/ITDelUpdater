@@ -42,7 +42,7 @@ namespace ITDelUp
 		private string ChromePath { get; set; }
 
 		//Sleep times, used in the link opening.
-		private int shortSleep = 400;
+		private int shortSleep = 500;
 		private int longSleep = 8000;
 
 		//Ctors
@@ -66,13 +66,13 @@ namespace ITDelUp
 		{
 			if (ClickedOpenOnce == true)
 			{
-				if (ShowConfirmation("You opened the links once already. Do you like browser spam that much?") == true)
+				if (ShowConfirmation("You opened or attempted to open all these links once already. Do you like browser spam that much?") == true)
 				{
-					OpenLinks();
+					OpenLinksDialog();
 				}
 			} else
 			{
-				OpenLinks();
+				OpenLinksDialog();
 				ClickedOpenOnce = true;
 			}
 		}
@@ -100,62 +100,77 @@ namespace ITDelUp
 			}
 		}
 
+		private void OpenLinksChrome()
+		{
+			int limitThree = 0;
+			try {
+				foreach (string url in urls)
+				{
+					Process.Start(ChromePath, url);
+					limitThree++;
+
+					if (limitThree < 3)
+					{
+						Thread.Sleep(shortSleep);
+					} else
+					{
+						Thread.Sleep(longSleep);
+						limitThree = 0;
+					}
+				}
+				lastThreeNote();
+			} catch (Exception e)
+			{
+				ShowError(e.Message);
+			}
+		}
+
 		private void OpenLinks()
+		{
+			try	{
+				int limitThree = 0;
+				foreach (string url in urls)
+				{
+					Process.Start(url);
+					limitThree++;
+
+					if (limitThree < 3)
+					{
+						Thread.Sleep(shortSleep);
+					} else
+					{
+						Thread.Sleep(longSleep);
+						limitThree = 0;
+					}
+				}
+				lastThreeNote();
+			} catch (Exception e)
+			{
+				ShowError(e.Message);
+			}
+		}
+
+		private void OpenLinksDialog()
 		{
 			if (checkChromeExists() == true)
 			{
-				MessageBoxResult msgres = MessageBox.Show("Google Chrome has been detected!\n\nThis program is going to open a bunch of downloads via Google Chrome.\n\nThis program may seem inactive while this is occurring. Don't worry! It will return to normal when the links are finished opening.", "Brace thine self for the downloads!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+				MessageBoxResult msgres = MessageBox.Show("Google Chrome has been detected! If you want to continue without Chrome, select \"No\" below or \"Cancel\" to stop this procedure.\n\nThis program is going to open a bunch of downloads via Google Chrome. This program may seem inactive while this is occurring. Give the program a minute or two, as the downloads are staggered.", "Brace thine self for the downloads approacheth!", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
 
-				try
+				if (msgres == MessageBoxResult.Yes)
 				{
-					int limitThree = 0;
-					foreach (string url in urls)
-					{
-						Process.Start(ChromePath, url);
-						limitThree++;
-
-						if (limitThree < 3)
-						{
-							Thread.Sleep(shortSleep);
-						} else
-						{
-							Thread.Sleep(longSleep);
-							limitThree = 0;
-						}
-					}
-					lastThreeNote();
-				} catch (Exception e)
+					OpenLinksChrome();
+				} else if (msgres == MessageBoxResult.No)
 				{
-					ShowError(e.Message);
+					OpenLinks();
 				}
+
 			} else
 			{
-				MessageBoxResult res = MessageBox.Show("!! Incoming links! Are you ready?? !!\n\nThis program may seem inactive while the links are opening. Just give it a minute. If it fails to respond, restart it and continue on where you left off.\n\nTo make life easier, set Chrome as your default browser during this process.", "Brace thine self for the downloads!", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+				MessageBoxResult res = MessageBox.Show("Incoming downloads! If you want to stop this procedure before the downloads begin, select \"No\" below.\n\nThis program is going to open a bunch of downloads via your default browser. This program may seem inactive while this is occurring. Give the program a minute or two, as the downloads are staggered.", "Oh Downloadeo, Downloadeo. Where art thou Downloadeo?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-				try
+				if (res == MessageBoxResult.Yes)
 				{
-					if (res == MessageBoxResult.Yes)
-					{
-						int limitThree = 0;
-						foreach (string url in urls)
-						{
-							Process.Start(url);
-							limitThree++;
-
-							if (limitThree < 3)
-							{
-								Thread.Sleep(shortSleep);
-							} else
-							{
-								Thread.Sleep(longSleep);
-								limitThree = 0;
-							}
-						}
-					}
-					lastThreeNote();
-				} catch (Exception e)
-				{
-					ShowError(e.Message);
+					OpenLinks();
 				}
 			}
 		}
@@ -167,7 +182,8 @@ namespace ITDelUp
 
 		private void lastThreeNote()
 		{
-			MessageBoxResult res = MessageBox.Show("The download pages should be done opening. The last three links (Spybot and two Comodo links) need to be manually downloaded from that point.\nThe two Comodo links are opened to download the 64 and 32 bit versions easily.", "Note", MessageBoxButton.OK, MessageBoxImage.Information);
+			//Leave as "end of process message" for simplicity's sake. That way we don't have to deal with counting which part we're at. 
+			MessageBoxResult res = MessageBox.Show("The automatic download pages should be done opening. The last three links (Spybot and two Comodo links) need to be manually downloaded from that point.\nThe two Comodo links are opened to download the 64 and 32 bit versions easily.", "Note", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 
 		private void RunBundler()
@@ -225,12 +241,12 @@ namespace ITDelUp
 		private void ShowError(string msg)
 		{
 			//SetError();
-			MessageBoxResult res = MessageBox.Show("An error occurred: " + msg, "ITDelUp Error", MessageBoxButton.OK, MessageBoxImage.Error);
+			MessageBoxResult res = MessageBox.Show("An error occurred: " + msg, "Error! Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 
 		private bool ShowConfirmation(string msg)
 		{
-			MessageBoxResult res = MessageBox.Show(msg, "Please confirm.", MessageBoxButton.YesNo, MessageBoxImage.Information);
+			MessageBoxResult res = MessageBox.Show(msg, "Your confirmation is requested.", MessageBoxButton.YesNo, MessageBoxImage.Information);
 
 			if (res == MessageBoxResult.Yes)
 			{
