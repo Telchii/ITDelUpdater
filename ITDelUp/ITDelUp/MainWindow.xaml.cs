@@ -25,7 +25,7 @@ namespace ITDelUp
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		//Helper Props
 		private string[] urls { get; set; }
@@ -41,6 +41,27 @@ namespace ITDelUp
 		private string TodaysDate { get; set; }
 		private string ChromePath { get; set; }
 
+		//Status props
+		private string _BackgroundColor;
+		public string BackgroundColor {
+			get { return _BackgroundColor; }
+			set { _BackgroundColor = value; }
+		}
+
+		private string _BusyStatus;
+		public string BusyStatus
+		{
+			get { return _BusyStatus; }
+			set { _BusyStatus = value; }
+		}
+
+		private bool _ButtonsEnabled;
+		public bool ButtonsEnabled
+		{
+			get { return _ButtonsEnabled; }
+			set { _ButtonsEnabled = value; }
+		}
+
 		//Sleep times, used in the link opening.
 		private int shortSleep = 500;
 		private int longSleep = 8000;
@@ -50,6 +71,7 @@ namespace ITDelUp
 		{
 			InitializeComponent();
 
+			SetBusy();
 			ReadLinksFile();
 			ClickedOpenOnce = false;
 			ClickedBundleOnce = false;
@@ -58,45 +80,59 @@ namespace ITDelUp
 
 			GenerateFileSafeDate();
 			ChromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
-			//SetReady();
+			SetReady();
 		}
 
 		//Button Handlers
 		private void Button_Open(object sender, RoutedEventArgs e)
 		{
+			SetBusy();
 			if (ClickedOpenOnce == true)
 			{
 				if (ShowConfirmation("You opened or attempted to open all these links once already. Do you like browser spam that much?") == true)
 				{
-					OpenLinksDialog();
+					//OpenLinksDialog();
+					ShowError("This is a test error!");
 				}
 			} else
 			{
-				OpenLinksDialog();
+				//OpenLinksDialog();
 				ClickedOpenOnce = true;
 			}
+			SetReady();
 		}
 
 		private void Button_Bundle(object sender, RoutedEventArgs e)
 		{
+			SetBusy();
 			RunBundler();
+			SetReady();
 		}
 
 		private void Button_Zip(object sender, RoutedEventArgs e)
 		{
+			SetBusy();
 			FileZipper();
+			SetReady();
 		}
 
 		//Helper Methods
 		private void ReadLinksFile()
 		{
-			string urlPath = "urls.txt";
 			try
 			{
-				urls = File.ReadAllLines(urlPath);
+				urls = File.ReadAllLines("urls.txt");
 			} catch (Exception e)
 			{
 				ShowError(e.Message);
+			}
+		}
+
+		private void VerifyBundlerBatFileExists()
+		{
+			if (!File.Exists("Bundler.bat"))
+			{
+				ShowError("File \"Bundler.bat\" does not exist. Please verify it is in the same location as this program.");
 			}
 		}
 
@@ -202,9 +238,8 @@ namespace ITDelUp
 				Process.Start(@"Bundler.bat");
 				Thread.Sleep(2000); //Give it a couple seconds to run. 
 
-				string newITDFolderName = @"C:\Users\";
-				newITDFolderName += username;
-				newITDFolderName += @"\Desktop\IT Delete "; //Keep that training space, yo.
+				string newITDFolderName = newDirPath;
+				newITDFolderName += " ";
 				newITDFolderName += TodaysDate;
 
 				Directory.Move(newDirPath, newITDFolderName);
@@ -219,18 +254,22 @@ namespace ITDelUp
 			try
 			{
 				string username = Environment.UserName;
-				string zipBasePath = @"C:\Users\";
-				zipBasePath += username;
-				zipBasePath += @"\Desktop\";
+				string basePaths = @"C:\Users\";
+				basePaths += username;
 
-				string zipResultPath = zipBasePath;
-				zipResultPath += @"\IT Delete";
+				string zipBasePath = basePaths;
+				zipBasePath += @"\Downloads\IT Delete "; //Keep that trailing space!
+				zipBasePath += TodaysDate;
+
+				string zipResultPath = basePaths;
+				zipResultPath += @"\Desktop\";
+				zipResultPath += "IT Delete "; //Mo trailin' spaces, yo!
 				zipResultPath += " ";
 				zipResultPath += TodaysDate;
 				zipResultPath += ".zip";
 
 				ZipFile.CreateFromDirectory(zipBasePath, zipResultPath);
-
+				Directory.Delete(zipBasePath);
 			} catch (Exception e)
 			{
 				ShowError(e.Message);
@@ -281,21 +320,39 @@ namespace ITDelUp
 			String result2 = fd.SafeFileName;
 		}
 
-		//Status Helpers
-		private void SetError()
+		//Status Helpers -- These are only implemented in the bound button methods ("button_X"), for simplicity and upkeep's sake. 
+		private void SetBusy() 
 		{
-			//StatusMessage = "Error";
-		}
-
-		private void SetWorking() 
-		{
-			//StatusMessage = "Working";
+			BackgroundColor = "Orange";
+			BusyStatus = "Working...";
+			ButtonsEnabled = false;
+			firePropChanges();
 		}
 
 		private void SetReady()
 		{
-			//StatusMessage = ""; //No news is good news. 
+			BackgroundColor = "White";
+			BusyStatus = "Ready";
+			ButtonsEnabled = true;
+			firePropChanges();
 		}
 
+		private void firePropChanges()
+		{
+			NotifyPropertyChanged("BackgroundColor");
+			NotifyPropertyChanged("BusyStatus");
+			NotifyPropertyChanged("ButtonsEnabled");
+		}
+
+		//Event Handlers
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void NotifyPropertyChanged(String info)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(info));
+			}
+		}
 	}//Class & NS end
 }

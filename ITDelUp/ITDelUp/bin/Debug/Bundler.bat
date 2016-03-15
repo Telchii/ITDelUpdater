@@ -29,8 +29,12 @@ move "%HOMEPATH%\Downloads\herd*.exe" "%HOMEPATH%\Downloads\IT Delete\"
 
 ::Revo
 move "%HOMEPATH%\Downloads\revouninstaller.zip" "%HOMEPATH%\Downloads\IT Delete\
+
 ::CCleaner
 move "%HOMEPATH%\Downloads\ccsetup*.zip" "%HOMEPATH%\Downloads\IT Delete\"
+
+::Other Tools (not regularly updated, already in Box)
+move "%HOMEPATH%\Downloads\Other Tools*.zip" "%HOMEPATH%\Downloads\IT Delete\"
 
 ::Commented out to let the CMD shell release the hold on the file. 
 ::pause;
