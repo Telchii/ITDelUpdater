@@ -45,21 +45,21 @@ namespace ITDelUp
 		private string _BackgroundColor;
 		public string BackgroundColor {
 			get { return _BackgroundColor; }
-			set { _BackgroundColor = value; }
+			set { _BackgroundColor = value; NotifyPropertyChanged("BackgroundColor"); }
 		}
 
 		private string _BusyStatus;
 		public string BusyStatus
 		{
 			get { return _BusyStatus; }
-			set { _BusyStatus = value; }
+			set { _BusyStatus = value; NotifyPropertyChanged("BusyStatus"); }
 		}
 
 		private bool _ButtonsEnabled;
 		public bool ButtonsEnabled
 		{
 			get { return _ButtonsEnabled; }
-			set { _ButtonsEnabled = value; }
+			set { _ButtonsEnabled = value; NotifyPropertyChanged("ButtonsEnabled"); }
 		}
 
 		//Sleep times, used in the link opening.
@@ -91,13 +91,14 @@ namespace ITDelUp
 			{
 				if (ShowConfirmation("You opened or attempted to open all these links once already. Do you like browser spam that much?") == true)
 				{
-					//OpenLinksDialog();
-					ShowError("This is a test error!");
+					OpenLinksDialog();
+					//ShowError("This is a test error!");
 				}
 			} else
 			{
-				//OpenLinksDialog();
-				ClickedOpenOnce = true;
+				OpenLinksDialog();
+				//ClickedOpenOnce = true;
+				ShowError("This is a test error!");
 			}
 			SetReady();
 		}
@@ -269,7 +270,7 @@ namespace ITDelUp
 				zipResultPath += ".zip";
 
 				ZipFile.CreateFromDirectory(zipBasePath, zipResultPath);
-				Directory.Delete(zipBasePath);
+				Directory.Delete(zipBasePath, true);
 			} catch (Exception e)
 			{
 				ShowError(e.Message);
@@ -280,7 +281,9 @@ namespace ITDelUp
 		private void ShowError(string msg)
 		{
 			//SetError();
-			MessageBoxResult res = MessageBox.Show("An error occurred: " + msg, "Error! Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+			string tmp = "An error occurred: ";
+			tmp += msg;
+			MessageBoxResult res = MessageBox.Show(msg, "Error! Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 
 		private bool ShowConfirmation(string msg)
@@ -326,7 +329,7 @@ namespace ITDelUp
 			BackgroundColor = "Orange";
 			BusyStatus = "Working...";
 			ButtonsEnabled = false;
-			firePropChanges();
+			//firePropChanges();
 		}
 
 		private void SetReady()
@@ -334,15 +337,15 @@ namespace ITDelUp
 			BackgroundColor = "White";
 			BusyStatus = "Ready";
 			ButtonsEnabled = true;
-			firePropChanges();
+			//firePropChanges();
 		}
 
-		private void firePropChanges()
-		{
-			NotifyPropertyChanged("BackgroundColor");
-			NotifyPropertyChanged("BusyStatus");
-			NotifyPropertyChanged("ButtonsEnabled");
-		}
+		//private void firePropChanges()
+		//{
+		//	NotifyPropertyChanged("BackgroundColor");
+		//	NotifyPropertyChanged("BusyStatus");
+		//	NotifyPropertyChanged("ButtonsEnabled");
+		//}
 
 		//Event Handlers
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -354,5 +357,5 @@ namespace ITDelUp
 				PropertyChanged(this, new PropertyChangedEventArgs(info));
 			}
 		}
-	}//Class & NS end
+	}
 }
