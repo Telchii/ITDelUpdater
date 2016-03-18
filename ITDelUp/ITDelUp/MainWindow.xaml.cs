@@ -91,13 +91,13 @@ namespace ITDelUp
 			{
 				if (ShowConfirmation("You opened or attempted to open all these links once already. Do you like browser spam that much?") == true)
 				{
-					OpenLinksDialog();
-					//ShowError("This is a test error!");
+					//OpenLinksDialog();
+					ShowError("This is a test error!");
 				}
 			} else
 			{
-				OpenLinksDialog();
-				//ClickedOpenOnce = true;
+				//OpenLinksDialog();
+				ClickedOpenOnce = true;
 				ShowError("This is a test error!");
 			}
 			SetReady();

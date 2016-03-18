@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ITDelUp.exe" size="222208">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ITDelUp.exe" size="222720">
       <assemblyIdentity name="ITDelUp" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9YhUInZzNFs4EdQw35HJWEcQq/GGH1McI2U0ZgRaIMo=</dsig:DigestValue>
+        <dsig:DigestValue>L/ggx12pg/UbiOcxwGK5mXGMEkA9Vu41CHmJwaxx4CM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
