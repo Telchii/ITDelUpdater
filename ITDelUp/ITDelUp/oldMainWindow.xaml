@@ -1,0 +1,31 @@
+﻿<Window x:Class="ITDelUp.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		Title="IT Delete Upater" Height="350" Width="525"
+		>
+	<Grid Background="{Binding Path=BackgroundColor, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="3*" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+		
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+
+		<TextBlock Text="1" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" Padding="0,10,0,0" VerticalAlignment="Center" FontSize="48" TextDecorations="Underline"/>
+		<TextBlock Text="2" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Center" Padding="0,10,0,0" VerticalAlignment="Center" FontSize="48" TextDecorations="Underline" />
+		<TextBlock Text="3" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Center" Padding="0,10,0,0" VerticalAlignment="Center" FontSize="48" TextDecorations="Underline"/>
+
+		<Button Content="Open It" Grid.Column="0" Grid.Row="1" Height="80" Width="150" Click="Button_Open" ToolTip="Opens a bunch of web pages for you to download stuff." />  <!--IsEnabled="{Binding Path=ButtonsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+		<Button Content="Group It" Grid.Column="1" Grid.Row="1" Height="80" Width="150" Click="Button_Bundle" ToolTip="Bundles up what you downloaded. Runs Bundler.bat." />
+			<Button Content="Zip It" Grid.Column="2" Grid.Row="1" Height="80" Width="150" Click="Button_Zip" ToolTip="Zip the bundled file for online uploading." />
+		
+		<TextBlock Text="Created by Kole F. for the WSU IT Service Desk" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="11" />
+		<Button Content="Bop It" Grid.Column="1" Grid.Row="2" Height="40" Width="100" Click="Button_Bop" ToolTip="Flick it, twist it, bop it!" VerticalAlignment="Top"/>
+		<TextBlock Text="{Binding Path=BusyStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+	</Grid>
+</Window>

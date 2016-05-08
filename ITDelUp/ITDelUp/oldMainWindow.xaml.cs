@@ -42,6 +42,7 @@ namespace ITDelUp
 		private string ChromePath { get; set; }
 
 		//Status props
+		/*
 		private string _BackgroundColor;
 		public string BackgroundColor {
 			get { return _BackgroundColor; }
@@ -61,6 +62,11 @@ namespace ITDelUp
 			get { return _ButtonsEnabled; }
 			set { _ButtonsEnabled = value; NotifyPropertyChanged("ButtonsEnabled"); }
 		}
+		*/
+
+		public string BackgroundColor { get; set; }
+		public string BusyStatus { get; set; }
+		public bool ButtonsEnabled { get; set; }
 
 		//Sleep times, used in the link opening.
 		private int shortSleep = 500;
@@ -71,7 +77,7 @@ namespace ITDelUp
 		{
 			InitializeComponent();
 
-			SetBusy();
+			//SetBusy();
 			ReadLinksFile();
 			ClickedOpenOnce = false;
 			ClickedBundleOnce = false;
@@ -91,14 +97,16 @@ namespace ITDelUp
 			{
 				if (ShowConfirmation("You opened or attempted to open all these links once already. Do you like browser spam that much?") == true)
 				{
-					//OpenLinksDialog();
-					ShowError("This is a test error!");
+					OpenLinksDialog();
+					Thread.Sleep(1000);
+					//ShowError("This is a test error!");
 				}
 			} else
 			{
-				//OpenLinksDialog();
+				OpenLinksDialog();
 				ClickedOpenOnce = true;
-				ShowError("This is a test error!");
+				Thread.Sleep(1000);
+				//ShowError("This is a test error!");
 			}
 			SetReady();
 		}
@@ -115,6 +123,11 @@ namespace ITDelUp
 			SetBusy();
 			FileZipper();
 			SetReady();
+		}
+
+		private void Button_Bop(object sender, RoutedEventArgs e)
+		{
+			Process.Start("https://upload.wikimedia.org/wikipedia/commons/b/bc/Bop_it.jpg");
 		}
 
 		//Helper Methods
@@ -329,23 +342,23 @@ namespace ITDelUp
 			BackgroundColor = "Orange";
 			BusyStatus = "Working...";
 			ButtonsEnabled = false;
-			//firePropChanges();
+			firePropChanges();
 		}
 
 		private void SetReady()
 		{
-			BackgroundColor = "White";
+			BackgroundColor = "Green";
 			BusyStatus = "Ready";
 			ButtonsEnabled = true;
-			//firePropChanges();
+			firePropChanges();
 		}
 
-		//private void firePropChanges()
-		//{
-		//	NotifyPropertyChanged("BackgroundColor");
-		//	NotifyPropertyChanged("BusyStatus");
-		//	NotifyPropertyChanged("ButtonsEnabled");
-		//}
+		private void firePropChanges()
+		{
+			NotifyPropertyChanged("BackgroundColor");
+			NotifyPropertyChanged("BusyStatus");
+			NotifyPropertyChanged("ButtonsEnabled");
+		}
 
 		//Event Handlers
 		public event PropertyChangedEventHandler PropertyChanged;
