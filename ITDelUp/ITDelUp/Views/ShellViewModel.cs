@@ -11,13 +11,13 @@ namespace ITDelUp.Views
 	{
 		public ShellViewModel()
 		{
+			this.DisplayName = "IT Delete Updater";
 			ShowMainView();
 		}
 
 		public void ShowMainView()
 		{
 			//var mainView = IoC.Get<MainViewModel>();
-			//ActivateItem(new MainViewModel());
 			//ActivateItem(mainView);
 			this.ActivateItem(new MainViewModel());
 		}
