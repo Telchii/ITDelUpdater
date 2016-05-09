@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using System.IO;					//For file ops
 using System.IO.Compression;		//For the zippers
-using System.Diagnostics;			//To open every friggin' link
+using System.Diagnostics;			//For the opening of every friggin' link
 using System.Threading;				//For sleepy time
-using System.ComponentModel;		//To notify of prop changes. Yay.
+//using System.ComponentModel;		//For the notification of prop changes. Yay.
 using Microsoft.Win32;				//For the File Dialog Box, according to the intellisense
 using System.Windows;				//For Message Dialog Box
 
