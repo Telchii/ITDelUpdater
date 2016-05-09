@@ -31,6 +31,7 @@ namespace ITDelUp.Views
 
 		private string TodaysDate { get; set; }
 		private string ChromePath { get; set; }
+		private bool RunningDebug { get; set; }
 
 		//Status Props + Window Props
 		private string _BackgroundColor;
@@ -61,7 +62,10 @@ namespace ITDelUp.Views
 		//Constructors
 		public MainViewModel()
 		{
+			//Removed IsWeDebugs(); from here, as it was resetting on each button press regardless of ctor updates. Moved to Button_Open.
 			ReadLinksFile();
+			RunningDebug = false;
+			
 			ClickedOpenOnce = false;
 			ClickedBundleOnce = false;
 			ClickedZipOnce = false;
@@ -76,20 +80,33 @@ namespace ITDelUp.Views
 		public void Button_Open()
 		{
 			SetBusy();
+			IsWeDebugs();
+
 			if (ClickedOpenOnce == true)
 			{
 				if (ShowConfirmation("You opened or attempted to open all these links once already. Do you like browser spam that much?") == true)
 				{
-					//OpenLinksDialog();
+					if(RunningDebug == false)
+					{
+						OpenLinksDialog();
+					} else 
+					{
+						ShowError("[DEBUG] Open should run here! (Clicked >1)");
+					}
 					Thread.Sleep(1000);
-					ShowError("This is a test error!");
 				}
 			} else
 			{
-				//OpenLinksDialog();
+				if (RunningDebug == false)
+				{
+					OpenLinksDialog();
+				} else
+				{
+					ShowError("[DEBUG] Open should run here! (Clicked == 1)");
+				}
 				ClickedOpenOnce = true;
 				Thread.Sleep(1000);
-				ShowError("This is a test error!");
+
 			}
 			SetReady();
 		}
@@ -334,6 +351,13 @@ namespace ITDelUp.Views
 			BackgroundColor = "White";
 			BusyStatus = "Ready";
 			ButtonsEnabled = true;
+		}
+
+		//Debug Helpers
+		[Conditional("DEBUG")]
+		private void IsWeDebugs()
+		{
+			RunningDebug = true;
 		}
 	}
 }

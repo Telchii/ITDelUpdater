@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="ITDelUp.exe.manifest" size="3933">
+    <dependentAssembly dependencyType="install" codebase="ITDelUp.exe.manifest" size="6727">
       <assemblyIdentity name="ITDelUp.exe" version="1.0.0.1" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>w5nhve9/IYaF7KoWQQSbaR8HvF7WooRGRU4saZnfmkE=</dsig:DigestValue>
+        <dsig:DigestValue>74xiHSIl8pmwc+CXFAeGUrArHLvaqblBecUb4543wq4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
