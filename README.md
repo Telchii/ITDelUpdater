@@ -1,6 +1,4 @@
-#ITDelUpdater
-Short for *IT Delete Updater*.
-
+#ITDeleteUpdater
 ##About
 This tool was designed to simplify the process of updating the "IT DELETE" folder that IT technicians use in my office. 
 
