@@ -4,16 +4,20 @@ Short for *IT Delete Updater*.
 ##About
 This tool was designed to simplify the process of updating the "IT DELETE" folder that IT technicians use in my office. 
 
-The IT Delete Updater tool does **not** scrape web pages and find the direct download link. This is due to the fact that websites update frequently. As such, links are opened to the provided download page.
+The IT Delete Updater tool does **not** scrape web pages and find the direct download link. This is due to the fact that websites update frequently and dynamic HTML parsing/scraping is not a skill I currently possess. As such, links are opened to the provided download page.
 
-The program is stand-alone, meaning that it can be ran from a removable drive. 
+The program is stand-alone. Running it from a removable drive is possible!
+
+##Requirements
+* Windows 7 or newer Windows operating system.
+* Up to date .NET Framework.
 
 ##Useage
 This tool has three main functions:
 
 1. Open links listed in the `urls.txt` file. This function will check for Google Chrome on the system, as direct download links will automatically begin downloading when the page is finished loading. Otherwise, it will default to the set default browser.
 2. Run the `bundler.bat` script to group downloaded files together.
-3. Compress (zip) the grouped files folder, renamed to have the current date.
+3. Compress (to a .zip) the grouped files folder, renamed to have the current date.
 
 ##Required Files:
 
