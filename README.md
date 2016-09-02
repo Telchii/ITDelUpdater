@@ -19,16 +19,16 @@ This tool has three main functions:
 2. Run the `bundler.bat` script to group downloaded files together.
 3. Compress (to a .zip) the grouped files folder, renamed to have the current date.
 
-##Required Files:
+##Required Files
 
 The IT Delete Updater requires two files (names are listed as what the program expects) to be present in the same directory as the ITDelUp.exe file. 
 
 * `urls.txt` - This is the list of links to be updated. Preferably links to direct downloads for efficiency's sake. Comment lines are **not** supported. If you attempt to put one in, you will have a funky page (attempted to be) opened. 
 * `Bundler.bat` - This batch file will group everything that was downloaded together into a named and dated file at the download location.
 
-These files are set up in a way that programs can be added or removed easily.
+###File examples
+These files are set up in a way that programs can be added or removed easily. Below are details and examples for each file.
 
-###File examples:
 **urls.txt** - The links below are examples only. They are in no way affiliated with this project and belong/are copyright of their respective owners:
 ```
 http://www.bleepingcomputer.com/download/junkware-removal-tool/dl/293/
