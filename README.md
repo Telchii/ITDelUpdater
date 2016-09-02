@@ -21,9 +21,9 @@ This tool has three main functions:
 
 ##Required Files:
 
-The IT Delete Updater requires two files (names are listed as what the program expects) to be present in the same directory as the ITDelUp.exe file:
+The IT Delete Updater requires two files (names are listed as what the program expects) to be present in the same directory as the ITDelUp.exe file. 
 
-* `urls.txt` - This is the list of links to be updated. Preferably links to direct downloads for efficiency's sake.
+* `urls.txt` - This is the list of links to be updated. Preferably links to direct downloads for efficiency's sake. Comment lines are **not** supported. If you attempt to put one in, you will have a funky page (attempted to be) opened. 
 * `Bundler.bat` - This batch file will group everything that was downloaded together into a named and dated file at the download location.
 
 These files are set up in a way that programs can be added or removed easily.
