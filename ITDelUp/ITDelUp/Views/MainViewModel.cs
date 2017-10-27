@@ -130,8 +130,13 @@ namespace ITDelUp.Views
 			Process.Start("https://upload.wikimedia.org/wikipedia/commons/b/bc/Bop_it.jpg");
 		}
 
-		//Helper Methods
-		private void ReadLinksFile()
+        public void Button_Whip()
+        {
+            Process.Start("https://www.youtube.com/watch?v=IIEVqFB4WUo");
+        }
+
+        //Helper Methods
+        private void ReadLinksFile()
 		{
 			try
 			{

@@ -9,7 +9,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*" />
 			<RowDefinition Height="3*" />
-			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
 		<Grid.ColumnDefinitions>
@@ -26,8 +26,20 @@
 		<Button Content="Group It" Grid.Column="1" Grid.Row="1" Height="75" Width="130" x:Name="Button_Bundle" ToolTip="Bundles up what you downloaded. Runs Bundler.bat." IsEnabled="{Binding ButtonsEnabled}" />
 		<Button Content="Zip It" Grid.Column="2" Grid.Row="1" Height="75" Width="130" x:Name="Button_Zip" ToolTip="Zip the bundled file for online uploading." IsEnabled="{Binding ButtonsEnabled}" />
 
-		<TextBlock Text="Created by Kole F. for the WSU IT Service Desk" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="11" />
-		<Button Content="Bop It" Grid.Column="1" Grid.Row="2" Height="40" Width="100" x:Name="Button_Bop" ToolTip="Flick it, twist it, bop it!" VerticalAlignment="Top" IsEnabled="{Binding ButtonsEnabled}" />
-		<TextBlock Text="{Binding BusyStatus}" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
-	</Grid>
+		<TextBlock Text="WSU - IT Service Desk" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontSize="11" />
+        <Grid Grid.Column="1" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Button Content="Bop It" Grid.Column="0" Grid.Row="0" Height="20" Width="100" x:Name="Button_Bop" ToolTip="Flick it, twist it, bop it!" VerticalAlignment="Top" IsEnabled="{Binding ButtonsEnabled}" />
+            <Button Content="Whip It" Grid.Column="0" Grid.Row="1" Height="20" Width="100" x:Name="Button_Whip" ToolTip="You must whip it!" VerticalAlignment="Top" IsEnabled="{Binding ButtonsEnabled}" />
+
+        </Grid>
+        <TextBlock Text="{Binding BusyStatus}" Grid.Column="2" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Grid>
 </UserControl>
