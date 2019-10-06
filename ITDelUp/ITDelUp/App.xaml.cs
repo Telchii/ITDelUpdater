@@ -16,7 +16,7 @@ namespace ITDelUp
 	{
 		public App()
 		{
-			//InitializeComponent();
+			InitializeComponent();
 		}
 	}
 }

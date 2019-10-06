@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.IO;					//For file ops
-using System.IO.Compression;		//For the zippers
+using System.IO;
+using System.IO.Compression;
 using System.Diagnostics;			//For the opening of every friggin' link
-using System.Threading;				//For sleepy time
-using Microsoft.Win32;				//For the File Dialog Box, according to the intellisense
-using System.Windows;				//For Message Dialog Box
-//using System.ComponentModel;		//For the notification of prop changes. Yay.
+using System.Threading;				//Threading & thread methods
+using Microsoft.Win32;				//File Dialog Box
+using System.Windows;				//Message Dialog Box
+using ITDelUp;
 
 namespace ITDelUp.Views
 {
@@ -25,13 +25,12 @@ namespace ITDelUp.Views
 		private bool ClickedZipOnce { get; set; }
 		private bool ClickedMoveOnce { get; set; }
 
-		private string zipBasePath { get; set; }
-		private string zipResultPath { get; set; }
-		private string newITDFolderName { get; set; }
+		private string ZipBasePath { get; set; }
+		private string ZipResultPath { get; set; }
+		private string NewITDFolderName { get; set; }
 
-		private string TodaysDate { get; set; }
-		private string ChromePath { get; set; }
-		private bool RunningDebug { get; set; }
+        private string NewDirPath { get; set; }
+		private string FileSafeDate { get; set; }
 
 		//Status Props + Window Props
 		private string _BackgroundColor;
@@ -56,15 +55,13 @@ namespace ITDelUp.Views
 		}
 		
 		//Fields
-		private int shortSleep = 500;
-		private int longSleep = 8000;
+		private const int shortSleep = 500;
+		private const int longSleep = 8000;
 
 		//Constructors
 		public MainViewModel()
 		{
-			//Removed IsWeDebugs(); from here, as it was resetting on each button press regardless of ctor updates. Moved to Button_Open.
 			ReadLinksFile();
-			RunningDebug = false;
 			
 			ClickedOpenOnce = false;
 			ClickedBundleOnce = false;
@@ -72,7 +69,6 @@ namespace ITDelUp.Views
 			ClickedMoveOnce = false;
 
 			GenerateFileSafeDate();
-			ChromePath = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
 			SetReady();
 		}
 
@@ -80,30 +76,18 @@ namespace ITDelUp.Views
 		public void Button_Open()
 		{
 			SetBusy();
-			IsWeDebugs();
 
 			if (ClickedOpenOnce == true)
 			{
-				if (ShowConfirmation("You opened or attempted to open all these links once already. Do you like browser spam that much?") == true)
+                //Intentionally two levels of "if" to allow no-action if they select "no" to the confirmation.
+				if (ShowConfirmation("You opened all these links once already. Do you like browser spam that much?"))
 				{
-					if(RunningDebug == false)
-					{
-						OpenLinksDialog();
-					} else 
-					{
-						ShowError("[DEBUG] Open should run here! (Clicked >1)");
-					}
+					OpenLinksDialog();
 					Thread.Sleep(1000);
 				}
 			} else
 			{
-				if (RunningDebug == false)
-				{
-					OpenLinksDialog();
-				} else
-				{
-					ShowError("[DEBUG] Open should run here! (Clicked == 1)");
-				}
+				OpenLinksDialog();
 				ClickedOpenOnce = true;
 				Thread.Sleep(1000);
 
@@ -132,7 +116,7 @@ namespace ITDelUp.Views
 
         public void Button_Whip()
         {
-            Process.Start("https://www.youtube.com/watch?v=IIEVqFB4WUo");
+            Process.Start("https://www.youtube.com/watch?v=IIEVqFB4WUo&t=9");
         }
 
         //Helper Methods
@@ -140,7 +124,7 @@ namespace ITDelUp.Views
 		{
 			try
 			{
-				urls = File.ReadAllLines("urls.txt");
+				urls = File.ReadAllLines(Settings.UrlsFile);
 			} catch (Exception e)
 			{
 				ShowError(e.Message);
@@ -149,9 +133,9 @@ namespace ITDelUp.Views
 
 		private void VerifyBundlerBatFileExists()
 		{
-			if (!File.Exists("Bundler.bat"))
+			if (!File.Exists(Settings.BundlerScriptFile))
 			{
-				ShowError("File \"Bundler.bat\" does not exist. Please verify it is in the same location as this program.");
+				ShowError($"File \"{Settings.BundlerScriptFile}\" does not exist. Please verify it is in the same directory as this program.");
 			}
 		}
 
@@ -162,7 +146,7 @@ namespace ITDelUp.Views
 			{
 				foreach (string url in urls)
 				{
-					Process.Start(ChromePath, url);
+					Process.Start(Settings.ChromePath, url);
 					limitThree++;
 
 					if (limitThree < 3)
@@ -174,7 +158,7 @@ namespace ITDelUp.Views
 						limitThree = 0;
 					}
 				}
-				lastThreeNote();
+				LastThreeNote();
 			} catch (Exception e)
 			{
 				ShowError(e.Message);
@@ -200,7 +184,7 @@ namespace ITDelUp.Views
 						limitThree = 0;
 					}
 				}
-				lastThreeNote();
+				LastThreeNote();
 			} catch (Exception e)
 			{
 				ShowError(e.Message);
@@ -209,62 +193,57 @@ namespace ITDelUp.Views
 
 		private void OpenLinksDialog()
 		{
-			if (checkChromeExists() == true)
+            bool UseChrome = CheckChromeExists();
+            string BrowserMessage = (UseChrome) 
+                ? "Google Chrome"
+                : "your default browser";
+
+			if (CheckChromeExists())
 			{
-				MessageBoxResult msgres = MessageBox.Show("Google Chrome has been detected! If you want to continue without Chrome, select \"No\" below or \"Cancel\" to stop this procedure.\n\nThis program is going to open a bunch of downloads via Google Chrome. This program may seem inactive while this is occurring. Give the program a minute or two, as the downloads are staggered.", "Brace thine self for the downloads approacheth!", MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                MessageBoxResult MessageResult = MessageBox.Show($"Incoming downloads!\n\nThis program is going to open a bunch of download URLs via {BrowserMessage}. This program may seem inactive while this is occurring. Give the program a minute or two, as the downloads are staggered.\n\nContinue with downloads?", "Incoming Downloads", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-				if (msgres == MessageBoxResult.Yes)
-				{
-					OpenLinksChrome();
-				} else if (msgres == MessageBoxResult.No)
-				{
-					OpenLinks();
-				}
 
-			} else
-			{
-				MessageBoxResult res = MessageBox.Show("Incoming downloads! If you want to stop this procedure before the downloads begin, select \"No\" below.\n\nThis program is going to open a bunch of downloads via your default browser. This program may seem inactive while this is occurring. Give the program a minute or two, as the downloads are staggered.", "Oh Downloadeo, Downloadeo. Where art thou Downloadeo?", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-				if (res == MessageBoxResult.Yes)
-				{
-					OpenLinks();
-				}
+                if (MessageResult == MessageBoxResult.Yes)
+                {
+                    if (UseChrome)
+                        OpenLinksChrome();
+                    else
+                        OpenLinks();
+                }
 			}
 		}
 
-		private bool checkChromeExists()
+		private bool CheckChromeExists()
 		{
-			return File.Exists(ChromePath); ;
+            return File.Exists(Settings.ChromePath);
 		}
 
-		private void lastThreeNote()
+		private void LastThreeNote()
 		{
 			//Leave as "end of process message" for simplicity's sake. That way we don't have to deal with counting which part we're at. 
-			MessageBoxResult res = MessageBox.Show("The automatic download pages should be done opening. The last three links (Spybot and two Comodo links) need to be manually downloaded from that point.\nThe two Comodo links are opened to download the 64 and 32 bit versions easily.", "Note", MessageBoxButton.OK, MessageBoxImage.Information);
+			MessageBox.Show("The automatic download pages should be done opening. The last few links need to be manually downloaded from that point. If a page was opened twice, check if both 32 and 64 bit need to be downloaded.", "Task Completed!", MessageBoxButton.OK, MessageBoxImage.Information);
 		}
 
 		private void RunBundler()
 		{
-			//Intended to run a bat/cmd file included in the directory.
-			//Simply due to the need to add/remove items on the fly.
+			//Intended to run a batch file included in the directory.
+			//  Rather than hard-code the expected files here, the script can be edited
+            //  as needed, rather than editing + recompiling this program.
 
 			try
 			{
-				string username = Environment.UserName;
+                //1 - Create the output directory (not yet timestamped)
+                NewDirPath = $@"{Settings.OutputDirectory}\{Settings.OutputFileName}";
 
-				string newDirPath = @"C:\Users\";
-				newDirPath += username;
-				newDirPath += @"\Downloads\IT Delete";
-
-				Process.Start(@"Bundler.bat");
+                //2 - Run the script
+				Process.Start(Settings.BundlerScriptFile);
 				Thread.Sleep(2000); //Give it a couple seconds to run. 
 
-				string newITDFolderName = newDirPath;
-				newITDFolderName += " ";
-				newITDFolderName += TodaysDate;
-
-				Directory.Move(newDirPath, newITDFolderName);
-			} catch (Exception e)
+                //3 - Rename/Timestamp the bundler's output directory
+				if(Settings.TimestampOutput)
+                    Directory.Move(NewDirPath, $@"{NewDirPath} {FileSafeDate}");
+                //else, do nothing
+            } catch (Exception e)
 			{
 				ShowError(e.Message);
 			}
@@ -274,23 +253,11 @@ namespace ITDelUp.Views
 		{
 			try
 			{
-				string username = Environment.UserName;
-				string basePaths = @"C:\Users\";
-				basePaths += username;
+				string ZipBasePath = $@"{NewDirPath} {FileSafeDate}";
+                string ZipResultPath = $"{Settings.ZipOutputDirectory}\\{Settings.OutputFileName} {FileSafeDate}.zip";
 
-				string zipBasePath = basePaths;
-				zipBasePath += @"\Downloads\IT Delete "; //Keep that trailing space!
-				zipBasePath += TodaysDate;
-
-				string zipResultPath = basePaths;
-				zipResultPath += @"\Desktop\";
-				zipResultPath += "IT Delete "; //Mo trailin' spaces, yo!
-				zipResultPath += " ";
-				zipResultPath += TodaysDate;
-				zipResultPath += ".zip";
-
-				ZipFile.CreateFromDirectory(zipBasePath, zipResultPath);
-				Directory.Delete(zipBasePath, true);
+				ZipFile.CreateFromDirectory(ZipBasePath, ZipResultPath);
+				Directory.Delete(ZipBasePath, true);
 			} catch (Exception e)
 			{
 				ShowError(e.Message);
@@ -300,48 +267,31 @@ namespace ITDelUp.Views
 		//Message Box Helpers
 		private void ShowError(string msg)
 		{
-			//SetError();
-			string tmp = "An error occurred: ";
-			tmp += msg;
-			MessageBoxResult res = MessageBox.Show(msg, "Error! Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+			MessageBoxResult res = MessageBox.Show($"An error occurred: {msg}", "Error! Error!", MessageBoxButton.OK, MessageBoxImage.Error);
 		}
 
 		private bool ShowConfirmation(string msg)
 		{
-			MessageBoxResult res = MessageBox.Show(msg, "Your confirmation is requested.", MessageBoxButton.YesNo, MessageBoxImage.Information);
-
-			if (res == MessageBoxResult.Yes)
-			{
-				return true;
-			} else
-			{
-				return false;
-			}
+			MessageBoxResult res = MessageBox.Show(msg, "Confirm.", MessageBoxButton.YesNo, MessageBoxImage.Information);
+            return (res == MessageBoxResult.Yes);
 		}
 
-		//Helper helper helpers.
+        //Other helper methods.
 		private void GenerateFileSafeDate()
 		{
-			string ret = "";
-			ret += DateTime.Today.Month;
-			ret += "-";
-			ret += DateTime.Today.Day;
-			ret += "-";
-			ret += DateTime.Today.Year;
-
-			TodaysDate = ret;
+            FileSafeDate = $"{DateTime.Today.Month}-{DateTime.Today.Day}-{DateTime.Today.Year}";
 		}
 
-		private void FileDialog()
-		{
-			OpenFileDialog fd = new OpenFileDialog();
-			fd.Filter = "All Files (*.*)|*.*";
-			fd.FilterIndex = 1;
-			fd.Multiselect = false;
-			fd.InitialDirectory = @"C:\";
-			var result = fd.ShowDialog();
-			String result2 = fd.SafeFileName;
-		}
+		//private void FileDialog()
+		//{
+		//	OpenFileDialog fd = new OpenFileDialog();
+		//	fd.Filter = "All Files (*.*)|*.*";
+		//	fd.FilterIndex = 1;
+		//	fd.Multiselect = false;
+		//	fd.InitialDirectory = @"C:\";
+		//	var result = fd.ShowDialog();
+		//	String result2 = fd.SafeFileName;
+		//}
 
 		//Status Helpers -- These are only implemented in the bound button methods ("button_X"), for simplicity and upkeep's sake. 
 		private void SetBusy()
@@ -356,13 +306,6 @@ namespace ITDelUp.Views
 			BackgroundColor = "White";
 			BusyStatus = "Ready";
 			ButtonsEnabled = true;
-		}
-
-		//Debug Helpers
-		[Conditional("DEBUG")]
-		private void IsWeDebugs()
-		{
-			RunningDebug = true;
 		}
 	}
 }
